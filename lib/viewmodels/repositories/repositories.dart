@@ -52,12 +52,44 @@ class RepositoriesEd {
 
       if (getToken.statusCode == 201) {
         final tokenPrefens = await SharedPreferences.getInstance();
-         tokenPrefens.setString("token", jsonDecode(getToken.body)["data"]["access_token"]);
+        tokenPrefens.setString(
+            "token", jsonDecode(getToken.body)["data"]["access_token"]);
 
-         return "yaxshi";
+        return "yaxshi";
       }
 
-      return  "yomon";
+      return "yomon";
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<String?> signUp(String phoneNumber, String password, String firstName, String lastName) async {
+    final sigupUrl = "https://e-commerce.birnima.uz/api/auth/signup";
+    final url = Uri.parse(sigupUrl);
+
+    final signUpData={
+      "auth_method": "phone-number",
+      "password": password,
+      "phone_number": phoneNumber,
+      "email": ""
+    };
+
+    try {
+      final addUser = await http.post(url, body: jsonEncode(signUpData),
+      headers: {"Content-Type": "application/json"},
+      );
+
+      if(addUser.statusCode==201)
+      {
+        final tokenPrefensSigup= await SharedPreferences.getInstance();
+        tokenPrefensSigup.setString("token2", jsonDecode(addUser.body)["data"]["access_token"]);
+
+        final mapGet=jsonDecode(addUser.body)["data"]["access_token"];
+
+        return mapGet;
+      }
+      return null;
     } catch (e) {
       throw Exception(e);
     }

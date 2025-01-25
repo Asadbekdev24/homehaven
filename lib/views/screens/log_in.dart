@@ -112,13 +112,16 @@ class _LogInState extends State<LogIn> {
                           if (_formKey.currentState!.validate() && javob) {
 
                         await provider.getFurnitures();
-                      // Agar validatsiya muvaffaqiyatli bo‘lsa
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //   const SnackBar(content: Text('Hamma maydonlar yaroqli!')),
-                      // );
+
 
                       Navigator.push(context, MaterialPageRoute(builder: (context) => Home(),));
 
+                      } else
+                      {
+                       // Agar validatsiya muvaffaqiyatli bo‘lmasa yoki user topilmasa
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Login yoki password yoki boshqa xato')),
+                      );
                       }
                         },
 

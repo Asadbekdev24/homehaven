@@ -11,7 +11,7 @@ class ProviderEd  extends ChangeNotifier{
 
   ProviderEd({required this.repositoriesEd});
 
-
+  final String? token="";
 
 
 
@@ -30,19 +30,38 @@ class ProviderEd  extends ChangeNotifier{
 
       return false;
 
+   }
+
+   Future<bool> authSignUp(List<String> dataOfSignUp) async
+   {
+
+     isLoading=false;
+     notifyListeners();
+
+     final javob = await repositoriesEd.signUp(dataOfSignUp[0], dataOfSignUp[1], dataOfSignUp[2], dataOfSignUp[3]);
+
+     if(javob!=null)
+     {
       
+      return true;
+     }
+
+     return false;
    }
 
 
 
    Future<void> getFurnitures() async{
+    isLoading=true;
+    notifyListeners();
    final prefs= await SharedPreferences.getInstance();
    final token=prefs.getString("token");
 
    final productdata= await repositoriesEd.getProduct(token!);
 
    products.add(productdata);
-
+   isLoading=false;
+   notifyListeners();
 
 
    }
